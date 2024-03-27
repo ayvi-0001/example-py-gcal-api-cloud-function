@@ -1,3 +1,5 @@
+# mypy: disable-error-code="import-untyped"
+
 import json
 import os
 from datetime import datetime, timedelta
@@ -27,8 +29,8 @@ def main(request: Request) -> str:
         tz_info = pytz.timezone(os.environ["TZ"])
         today = datetime.today().astimezone(tz_info)
 
-        timeMin = today.replace(hour=0, minute=0, second=0, microsecond=0)
-        timeMax = today.replace(hour=23, minute=59, second=59, microsecond=999999)
+        timeMin = datetime.combine(today, datetime.min.time())
+        timeMax = datetime.combine(today, datetime.max.time())
 
         if data and "timedelta" in data:
             match data["timedelta"]:
